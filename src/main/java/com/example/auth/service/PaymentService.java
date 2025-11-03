@@ -14,6 +14,7 @@ import com.razorpay.RazorpayClient;
 import com.razorpay.RazorpayException;
 import com.razorpay.Utils;
 import jakarta.annotation.PostConstruct;
+import jakarta.transaction.Transactional;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -86,7 +87,7 @@ public class PaymentService {
             throw new CustomException("Unexpected error while creating order: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @Transactional
     public String verifyPayment(VerifyPaymentRequest request, String userEmail) {
         try {
             Payment payment = paymentRepository.findByRazorpayOrderId(request.getRazorpayOrderId())
