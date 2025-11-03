@@ -14,7 +14,6 @@ public class JwtProvider {
     private final Key signingKey;
 
     public JwtProvider() {
-        // Use the constant SECRET (for demo). For production, read from properties/secret manager.
         this.signingKey = Keys.hmacShaKeyFor(JwtConstant.SECRET.getBytes(StandardCharsets.UTF_8));
     }
 

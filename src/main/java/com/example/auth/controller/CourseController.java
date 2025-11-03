@@ -20,7 +20,6 @@ public class CourseController {
         return ResponseEntity.ok(courseService.listAll());
     }
 
-    // create - for creators/admin; for now allow authenticated users for quick testing
     @PostMapping
     public ResponseEntity<Course> create(@RequestBody Course course) {
         return ResponseEntity.ok(courseService.save(course));

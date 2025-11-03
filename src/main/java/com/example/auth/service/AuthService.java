@@ -39,7 +39,7 @@ public class AuthService {
         Role role = Role.STUDENT;
         if (request.getRole() != null && !request.getRole().isBlank()) {
             try {
-                Role requested = Role.valueOf(request.getRole().trim().toUpperCase()); // only allow STUDENT or CREATOR at registration; do not allow ADMIN
+                Role requested = Role.valueOf(request.getRole().trim().toUpperCase());
                 if (requested == Role.CREATOR || requested == Role.STUDENT) {
                     role = requested;
                 } else {

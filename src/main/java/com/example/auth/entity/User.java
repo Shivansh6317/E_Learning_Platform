@@ -3,8 +3,6 @@ package com.example.auth.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-
-// imports
 import java.util.Set;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.JoinTable;
@@ -46,7 +44,7 @@ public class User {
     private Role role = Role.STUDENT;
 
 
-    // inside User class
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "user_courses",

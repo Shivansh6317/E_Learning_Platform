@@ -89,7 +89,6 @@ public class PaymentService {
             Payment payment = paymentRepository.findByRazorpayOrderId(request.getRazorpayOrderId())
                     .orElseThrow(() -> new CustomException("Order not found", HttpStatus.NOT_FOUND));
 
-            // Verify signature using Razorpay secret
             JSONObject attributes = new JSONObject();
             attributes.put("razorpay_order_id", request.getRazorpayOrderId());
             attributes.put("razorpay_payment_id", request.getRazorpayPaymentId());
@@ -103,13 +102,11 @@ public class PaymentService {
                 throw new CustomException("Invalid payment signature", HttpStatus.BAD_REQUEST);
             }
 
-            // Mark payment as successful
             payment.setStatus("SUCCESS");
             payment.setRazorpayPaymentId(request.getRazorpayPaymentId());
             payment.setRazorpaySignature(request.getRazorpaySignature());
             paymentRepository.save(payment);
 
-            // Enroll user in course (safe handling for null set)
             User user = payment.getUser();
             Course course = payment.getCourse();
             if (user != null && course != null) {
@@ -123,10 +120,8 @@ public class PaymentService {
             return "Payment verified successfully and student enrolled.";
 
         } catch (CustomException e) {
-            // Re-throw to be handled by GlobalExceptionHandler
             throw e;
         } catch (Exception e) {
-            // Any unexpected errors (like Razorpay internal errors)
             throw new CustomException("Error verifying payment: " + e.getMessage(),
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }

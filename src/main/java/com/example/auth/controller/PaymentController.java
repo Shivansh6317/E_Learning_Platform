@@ -22,7 +22,7 @@ public class PaymentController {
     private final PaymentService paymentService;
     private final JwtProvider jwtProvider;
 
-    // ✅ CREATE ORDER
+
     @PostMapping("/create-order")
     public ResponseEntity<?> createOrder(@RequestBody CreateOrderRequest request, HttpServletRequest httpRequest)
             throws RazorpayException {
@@ -32,7 +32,7 @@ public class PaymentController {
     }
 
 
-    // ✅ VERIFY PAYMENT
+
     @PostMapping("/verify")
     public ResponseEntity<?> verify(@RequestBody VerifyPaymentRequest request, HttpServletRequest httpRequest)
             throws RazorpayException {
@@ -41,7 +41,6 @@ public class PaymentController {
         return ResponseEntity.ok(msg);
     }
 
-    // ✅ Helper Method to safely extract JWT
     private String extractEmailFromToken(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
 
@@ -49,7 +48,7 @@ public class PaymentController {
             throw new CustomException("Missing or invalid Authorization header", HttpStatus.UNAUTHORIZED);
         }
 
-        String token = authHeader.substring(7).trim(); // ✅ removes 'Bearer ' and trims any space/newline
+        String token = authHeader.substring(7).trim();
         if (!jwtProvider.validateToken(token)) {
             throw new CustomException("Invalid or expired token", HttpStatus.UNAUTHORIZED);
         }
