@@ -31,11 +31,4 @@ build/
 
 ### VS Code ###
 .vscode/
-### Spring Boot Configuration Files ###
-# Ignore environment-specific and secret config files
-src/main/resources/application.properties
-src/main/resources/application.yml
 
-# (optional) ignore local environment override files
-src/main/resources/application-*.properties
-src/main/resources/application-*.yml
