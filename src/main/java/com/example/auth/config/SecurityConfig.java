@@ -3,6 +3,7 @@ package com.example.auth.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -35,8 +36,8 @@ public class SecurityConfig {
                                 "/images/**",
                                 "/favicon.ico","/v3/api-docs/**","/swagger-ui/**","/swagger-ui.html","/swagger-resources/**",
                                 "/webjars/**").permitAll()
-                        .requestMatchers("/api/courses/**").permitAll()   // or .authenticated()
-                        .requestMatchers("/api/payments/**").permitAll()
+                        .requestMatchers("/api/payments/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/course/all", "/api/course/{id}").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/creator/**").hasAnyRole("CREATOR", "ADMIN")
                         .requestMatchers("/api/student/**").hasAnyRole("STUDENT", "CREATOR", "ADMIN")

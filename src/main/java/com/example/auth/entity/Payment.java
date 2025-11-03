@@ -23,7 +23,7 @@ public class Payment {
 
     private double amount;
     private String currency = "INR";
-    private String status; // PENDING, SUCCESS, FAILED
+    private String status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

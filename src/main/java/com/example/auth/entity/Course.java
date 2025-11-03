@@ -3,8 +3,9 @@ package com.example.auth.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
-@Table(name = "courses")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,5 +18,27 @@ public class Course {
 
     private String title;
     private String description;
-    private double price;
+    private String category;
+    private Double price;
+
+    private String videoUrl;
+    private String fileUrl;
+
+    @ManyToOne
+    @JoinColumn(name = "creator_id")
+    private User creator;
+
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
+    @PrePersist
+    public void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
 }

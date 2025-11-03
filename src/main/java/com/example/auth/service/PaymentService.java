@@ -58,9 +58,12 @@ public class PaymentService {
 
             Course course = courseRepository.findById(request.getCourseId())
                     .orElseThrow(() -> new CustomException("Course not found", HttpStatus.NOT_FOUND));
+            if (user.getEnrolledCourses() != null && user.getEnrolledCourses().contains(course)) {
+                throw new CustomException("You are already enrolled in this course", HttpStatus.BAD_REQUEST);
+            }
 
             JSONObject orderRequest = new JSONObject();
-            orderRequest.put("amount", (int) (request.getAmount() * 100)); // paise
+            orderRequest.put("amount", (int) (course.getPrice() * 100)); // paise
             orderRequest.put("currency", "INR");
             orderRequest.put("receipt", "txn_" + System.currentTimeMillis());
 
@@ -68,7 +71,7 @@ public class PaymentService {
 
             Payment payment = Payment.builder()
                     .razorpayOrderId(order.get("id"))
-                    .amount(request.getAmount())
+                    .amount(course.getPrice())
                     .status("PENDING")
                     .user(user)
                     .course(course)
