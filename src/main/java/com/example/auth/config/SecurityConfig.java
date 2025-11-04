@@ -46,7 +46,7 @@ public class SecurityConfig {
                                 "/favicon.ico","/v3/api-docs/**","/swagger-ui/**","/swagger-ui.html","/swagger-resources/**",
                                 "/webjars/**").permitAll()
                         .requestMatchers( "/api/ml/**").permitAll()
-                        .requestMatchers("/api/payments/**").authenticated()
+                        .requestMatchers("/api/payments/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/course/all", "/api/course/{id}").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/creator/**").hasAnyRole("CREATOR", "ADMIN")
