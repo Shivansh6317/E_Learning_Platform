@@ -105,7 +105,7 @@
 
         try {
             // 🧾 Step 1: Create order
-            const orderRes = await fetch("http://localhost:8080/api/payments/create-order", {
+            const orderRes = await fetch("https://e-learning-platform-w2l1.onrender.com", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -124,17 +124,16 @@
 
             const orderData = await orderRes.json();
 
-            // 💳 Step 2: Open Razorpay Checkout
+
             const options = {
-                "key": "rzp_test_RZoYCCZlPKea2x",  // 🔹 Replace with your Razorpay Key ID
+                "key": "${RZPAY_Id}",
                 "amount": orderData.amount,
                 "currency": orderData.currency,
                 "name": "E-Learning Platform",
                 "description": "Course Purchase",
                 "order_id": orderData.id,
                 "handler": async function (response) {
-                    // 🧩 Step 3: Verify Payment
-                    const verifyRes = await fetch("http://localhost:8080/api/payments/verify", {
+                    const verifyRes = await fetch("https://e-learning-platform-w2l1.onrender.com", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
