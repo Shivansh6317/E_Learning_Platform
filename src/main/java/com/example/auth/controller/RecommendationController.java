@@ -15,12 +15,12 @@ public class RecommendationController {
     private final RecommendationService recommendationService;
 
     @GetMapping("/recommend")
-    public List<String> getRecommendations(@RequestParam String course_name) {
+    public List<Map<String, Object>> getRecommendations(@RequestParam String course_name) {
         return recommendationService.getRecommendedCourses(course_name);
     }
 
     @GetMapping("/search")
-    public List<String> searchCourses(@RequestParam String keyword) {
+    public List<Map<String, Object>> searchCourses(@RequestParam String keyword) {
         return recommendationService.searchCourses(keyword);
     }
 
@@ -29,4 +29,3 @@ public class RecommendationController {
         return recommendationService.getAllCourses();
     }
 }
-

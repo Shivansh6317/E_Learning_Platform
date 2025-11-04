@@ -17,31 +17,32 @@ public class RecommendationService {
 
     private static final String BASE_URL = "https://student-recomdentation-system.onrender.com";
 
-
-    public List<String> getRecommendedCourses(String courseName) {
-        String url = UriComponentsBuilder.fromHttpUrl(BASE_URL + "/recommend/")
+    public List<Map<String, Object>> getRecommendedCourses(String courseName) {
+        String url = UriComponentsBuilder.fromHttpUrl(BASE_URL + "/recommend")
                 .queryParam("course_name", courseName)
                 .toUriString();
 
         ResponseEntity<Map> response = restTemplate.getForEntity(url, Map.class);
         Map<String, Object> body = response.getBody();
-        return (List<String>) body.get("similar_courses");
+
+        return (List<Map<String, Object>>) body.get("recommended_courses");
     }
 
-
-    public List<String> searchCourses(String keyword) {
-        String url = UriComponentsBuilder.fromHttpUrl(BASE_URL + "/search/")
+    public List<Map<String, Object>> searchCourses(String keyword) {
+        String url = UriComponentsBuilder.fromHttpUrl(BASE_URL + "/search")
                 .queryParam("keyword", keyword)
+                .encode() // <-- ADD THIS
                 .toUriString();
 
         ResponseEntity<Map> response = restTemplate.getForEntity(url, Map.class);
         Map<String, Object> body = response.getBody();
-        return (List<String>) body.get("matching_courses");
+
+        return (List<Map<String, Object>>) body.get("courses");
     }
 
 
     public Map<String, Object> getAllCourses() {
-        String url = BASE_URL + "/courses/";
+        String url = BASE_URL + "/courses";
         ResponseEntity<Map> response = restTemplate.getForEntity(url, Map.class);
         return response.getBody();
     }

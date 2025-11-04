@@ -65,7 +65,7 @@
 </div>
 
 <script>
-    // 🔹 Decode JWT (Base64)
+    // Decode JWT
     function decodeJWT(token) {
         try {
             const payload = token.split('.')[1];
@@ -75,18 +75,13 @@
         }
     }
 
-    // Auto-fill user details when token is entered
     document.getElementById('accessToken').addEventListener('input', function() {
         const token = this.value.trim();
         if (token) {
             const data = decodeJWT(token);
             if (data && data.sub) {
-                document.getElementById('email').value = data.sub; // subject = email
-                if (data.name) {
-                    document.getElementById('name').value = data.name;
-                } else if (data.role) {
-                    document.getElementById('name').value = data.role;
-                }
+                document.getElementById('email').value = data.sub;
+                document.getElementById('name').value = data.name || data.role || "";
             }
         }
     });
@@ -104,7 +99,8 @@
         const amount = document.getElementById('amount').value;
 
         try {
-            const orderRes = await fetch("https://e-learning-platform-w2l1.onrender.com", {
+            // ✅ Correct endpoint for creating order
+            const orderRes = await fetch("https://e-learning-platform-w2l1.onrender.com/api/payments/create-order", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -122,17 +118,19 @@
             }
 
             const orderData = await orderRes.json();
+            console.log("Order created:", orderData);
 
-
+            // ✅ Replace with your actual Razorpay key
             const options = {
-                "key": "${RZPAY_Id}",
+                "key": "rzp_test_RZoYCCZlPKea2x",
                 "amount": orderData.amount,
                 "currency": orderData.currency,
                 "name": "E-Learning Platform",
                 "description": "Course Purchase",
                 "order_id": orderData.id,
                 "handler": async function (response) {
-                    const verifyRes = await fetch("https://e-learning-platform-w2l1.onrender.com", {
+
+                    const verifyRes = await fetch("https://e-learning-platform-w2l1.onrender.com/api/payments/verify", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
