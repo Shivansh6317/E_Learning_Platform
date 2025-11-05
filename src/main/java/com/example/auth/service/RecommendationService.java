@@ -31,19 +31,29 @@ public class RecommendationService {
     public List<Map<String, Object>> searchCourses(String keyword) {
         String url = UriComponentsBuilder.fromHttpUrl(BASE_URL + "/search")
                 .queryParam("keyword", keyword)
-                .encode() // <-- ADD THIS
                 .toUriString();
-
         ResponseEntity<Map> response = restTemplate.getForEntity(url, Map.class);
         Map<String, Object> body = response.getBody();
+
+        if (body == null) {
+            throw new RuntimeException("Empty response from ML API");
+        }
+
+        if (body.containsKey("message")) {
+            throw new RuntimeException("No results: " + body.get("message"));
+        }
 
         return (List<Map<String, Object>>) body.get("courses");
     }
 
 
-    public Map<String, Object> getAllCourses() {
-        String url = BASE_URL + "/courses";
+    public Map<String, Object> getAllCourses(int limit) {
+        String url = UriComponentsBuilder.fromHttpUrl(BASE_URL + "/courses/")
+                .queryParam("limit", limit)
+                .toUriString();
+
         ResponseEntity<Map> response = restTemplate.getForEntity(url, Map.class);
         return response.getBody();
     }
+
 }

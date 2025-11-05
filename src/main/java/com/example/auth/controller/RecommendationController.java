@@ -25,7 +25,8 @@ public class RecommendationController {
     }
 
     @GetMapping("/courses")
-    public Map<String, Object> getCourses() {
-        return recommendationService.getAllCourses();
+    public Map<String, Object> getCourses(@RequestParam(defaultValue = "10") int limit) {
+        return recommendationService.getAllCourses(limit);
     }
+
 }
